@@ -1,0 +1,3 @@
+[submodule "SM-Engine"]
+	path = SM-Engine
+	url = https://github.com/stephenmerendino/SM-Engine
