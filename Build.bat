@@ -18,6 +18,6 @@ set ObjOutput=%BuildDir%%BaseFilename%.obj
 set FilesToCompile=%SrcDir%%BaseFilename%.cpp
 REM set FilesToCompile=%FilesToCompile%" "%MainDir%SomeNewFile.cpp
 
-cl /nologo /Zi /Od %FilesToCompile% /Fe%ExeOutput% /Fd%PdbOutput% /Fo%ObjOutput%
+cl /Zi /Od %FilesToCompile% /Fe%ExeOutput% /Fd%PdbOutput% /Fo%ObjOutput%
 
 ENDLOCAL

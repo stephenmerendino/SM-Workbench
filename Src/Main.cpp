@@ -1,8 +1,6 @@
 #include <stdio.h>
 
-#include "../sm-engine/Src/Test.cpp"
-
-#include "sm-engine/Renderer/Renderer.h"
+#include "../SM-Engine/Src/SM-Engine/Renderer/Test.cpp"
 
 int main()
 {
