@@ -2,24 +2,26 @@
 
 SETLOCAL
 
-set BaseFilename=Main
+set BaseFilename=Workbench
 set MainDir=%~dp0
 set SrcDir=%MainDir%Src\
-set BuildDir=%MainDir%Build\
+set BuildDir=%MainDir%\SM-Engine\Build\
 
-call %MainDir%sm-engine\Build.bat
-
-mkdir %BuildDir% >nul 2>&1
-
-set ExeOutput=%BuildDir%%BaseFilename%.exe
-set PdbOutput=%BuildDir%%BaseFilename%.pdb
-set ObjOutput=%BuildDir%%BaseFilename%.obj
+set CompilerFlags=/Zi /Od /nologo /std:c++20
 
 set FilesToCompile=%SrcDir%%BaseFilename%.cpp
 REM set FilesToCompile=%FilesToCompile%" "%MainDir%SomeNewFile.cpp
 
-set IncludeDirs=/ISrc /ISM-Engine/Src
+set IncludeDirs=/ISrc /I%MainDir%/SM-Engine/Src
 
-cl /Zi /Od %IncludeDirs% %FilesToCompile% /Fe%ExeOutput% /Fd%PdbOutput% /Fo%ObjOutput%
+set DllOutput=%BuildDir%%BaseFilename%.dll
+set PdbOutput=%BuildDir%%BaseFilename%.pdb
+set ObjOutput=%BuildDir%%BaseFilename%.obj
+set OutputFiles=/Fe%DllOutput% /Fd%PdbOutput% /Fo%ObjOutput%
+
+set LinkerFlags=/LD /link /DLL
+
+call %MainDir%SM-Engine\Build.bat
+cl %CompilerFlags% %FilesToCompile% %IncludeDirs% %OutputFiles% %LinkerFlags%
 
 ENDLOCAL
