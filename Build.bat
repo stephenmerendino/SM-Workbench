@@ -5,7 +5,7 @@ SETLOCAL
 set BaseFilename=Workbench
 set MainDir=%~dp0
 set SrcDir=%MainDir%Src\
-set BuildDir=%MainDir%\SM-Engine\Build\
+set BuildDir=%MainDir%SM-Engine\Build\
 
 set CompilerFlags=/Zi /Od /nologo /std:c++20
 
@@ -21,7 +21,7 @@ set OutputFiles=/Fe%DllOutput% /Fd%PdbOutput% /Fo%ObjOutput%
 
 set LinkerFlags=/LD /link /DLL
 
-call %MainDir%SM-Engine\Build.bat
+REM call %MainDir%SM-Engine\Build.bat
 cl %CompilerFlags% %FilesToCompile% %IncludeDirs% %OutputFiles% %LinkerFlags%
 
 ENDLOCAL

@@ -2,19 +2,19 @@
 
 #include "SM/Engine.h"
 
-sm::EngineApi Engine;
+SM::EngineApi Engine;
 
-SM_DLL_EXPORT void GameLoaded(sm::EngineApi engineApi)
+GAME_LOADED
 {
     Engine = engineApi;
 }
 
-SM_DLL_EXPORT void GameUpdate()
+GAME_UPDATE
 {
-    Engine.EngineLog("GameUpdate\n");
+    //Engine.EngineLog("GameUpdate\n");
 }
 
-SM_DLL_EXPORT void GameRender()
+GAME_RENDER
 {
-    Engine.EngineLog("GameRender\n");
+    //Engine.EngineLog("GameRender\n");
 }
