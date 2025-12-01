@@ -1,16 +1,11 @@
 [ 
   { 
-    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
+    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/MainWin32.cpp", 
     "file": "SM-Engine/Src/SM/MainWin32.cpp" 
   }, 
   { 
-    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
-    "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/PlatformWin32.cpp", 
-    "file": "SM-Engine/Src/SM/PlatformWin32.cpp" 
-  }, 
-  { 
-    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
+    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src Src/Workbench.cpp", 
     "file": "Src/Workbench.cpp" 
   } 
