@@ -25,3 +25,5 @@ REM call %MainDir%SM-Engine\Build.bat
 cl %CompilerFlags% %FilesToCompile% %IncludeDirs% %OutputFiles% %LinkerFlags%
 
 ENDLOCAL
+
+EXIT /b %ERRORLEVEL%

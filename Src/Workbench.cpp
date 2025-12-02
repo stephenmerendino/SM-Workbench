@@ -4,9 +4,14 @@
 
 SM::EngineApi Engine;
 
-GAME_LOADED
+GAME_BIND_ENGINE
 {
     Engine = engineApi;
+}
+
+GAME_INIT
+{
+    Engine.EngineLog("GameInit\n");
 }
 
 GAME_UPDATE
