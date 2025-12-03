@@ -11,7 +11,7 @@ GAME_BIND_ENGINE
 
 GAME_INIT
 {
-    Engine.EngineLog("GameInit\n");
+    Engine.Log("GameInit\n");
 }
 
 GAME_UPDATE
