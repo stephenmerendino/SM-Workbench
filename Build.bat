@@ -2,27 +2,34 @@
 
 SETLOCAL
 
-set BaseFilename=Workbench
+set BaseFilename=MainWin32
 set MainDir=%~dp0
 set SrcDir=%MainDir%Src\
-set BuildDir=%MainDir%SM-Engine\Build\
+set BuildDir=%MainDir%\Build\
+set EngineDir=%~dp0SM-Engine\
 
 set CompilerFlags=/Zi /Od /nologo /std:c++20
 
 set FilesToCompile=%SrcDir%%BaseFilename%.cpp
 REM set FilesToCompile=%FilesToCompile%" "%MainDir%SomeNewFile.cpp
 
-set IncludeDirs=/ISrc /I%MainDir%/SM-Engine/Src
+set IncludeDirs=/ISrc\ /I%MainDir%SM-Engine\Src\
 
-set DllOutput=%BuildDir%%BaseFilename%.dll
-set PdbOutput=%BuildDir%%BaseFilename%.pdb
-set ObjOutput=%BuildDir%%BaseFilename%.obj
-set OutputFiles=/Fe%DllOutput% /Fd%PdbOutput% /Fo%ObjOutput%
+set EngineLibDir=%MainDir%SM-Engine\Build\
+set Libs=SM-Engine.lib
 
-set LinkerFlags=/LD /link /DLL
+set ExeOutput=%BuildDir%Workbench.exe
+set PdbOutput=%BuildDir%Workbench.pdb
+set ObjOutput=%BuildDir%Workbench.obj
+set OutputFiles=/Fe%ExeOutput% /Fd%PdbOutput% /Fo%ObjOutput%
 
-REM call %MainDir%SM-Engine\Build.bat
+set LibsPath=/LIBPATH:%EngineDir%Build\ /LIBPATH:%EngineDir%Libs\
+set LinkerFlags=/link %libs% %LibsPath%
+
+call %MainDir%SM-Engine\Build.bat
+@echo on
 cl %CompilerFlags% %FilesToCompile% %IncludeDirs% %OutputFiles% %LinkerFlags%
+@echo off
 
 ENDLOCAL
 
