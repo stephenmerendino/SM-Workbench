@@ -1,81 +1,91 @@
 [ 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/Engine.cpp", 
     "file": "SM-Engine/Src/SM/Engine.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
-    "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/MainWin32.cpp", 
-    "file": "SM-Engine/Src/SM/MainWin32.cpp" 
-  }, 
-  { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/Math.cpp", 
     "file": "SM-Engine/Src/SM/Math.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/Memory.cpp", 
     "file": "SM-Engine/Src/SM/Memory.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/PlatformWin32.cpp", 
     "file": "SM-Engine/Src/SM/PlatformWin32.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
-    "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/Renderer/Renderer.cpp", 
-    "file": "SM-Engine/Src/SM/Renderer/Renderer.cpp" 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
+    "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/Util.cpp", 
+    "file": "SM-Engine/Src/SM/Util.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
+    "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/Renderer/Camera.cpp", 
+    "file": "SM-Engine/Src/SM/Renderer/Camera.cpp" 
+  }, 
+  { 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
+    "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/Renderer/Color.cpp", 
+    "file": "SM-Engine/Src/SM/Renderer/Color.cpp" 
+  }, 
+  { 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/SM/Renderer/VulkanRenderer.cpp", 
     "file": "SM-Engine/Src/SM/Renderer/VulkanRenderer.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/ThirdParty/imgui/imgui.cpp", 
     "file": "SM-Engine/Src/ThirdParty/imgui/imgui.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/ThirdParty/imgui/imgui_demo.cpp", 
     "file": "SM-Engine/Src/ThirdParty/imgui/imgui_demo.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/ThirdParty/imgui/imgui_draw.cpp", 
     "file": "SM-Engine/Src/ThirdParty/imgui/imgui_draw.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/ThirdParty/imgui/imgui_impl_vulkan.cpp", 
     "file": "SM-Engine/Src/ThirdParty/imgui/imgui_impl_vulkan.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/ThirdParty/imgui/imgui_impl_win32.cpp", 
     "file": "SM-Engine/Src/ThirdParty/imgui/imgui_impl_win32.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/ThirdParty/imgui/imgui_tables.cpp", 
     "file": "SM-Engine/Src/ThirdParty/imgui/imgui_tables.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/ThirdParty/imgui/imgui_widgets.cpp", 
     "file": "SM-Engine/Src/ThirdParty/imgui/imgui_widgets.cpp" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src SM-Engine/Src/ThirdParty/vulkan/vulkan.cppm", 
     "file": "SM-Engine/Src/ThirdParty/vulkan/vulkan.cppm" 
   }, 
   { 
-    "directory": "C:/Users/smerendino/Repos/SM-Workbench", 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
+    "command": "cl.exe /ISrc /ISM-Engine/Src Src/MainWin32.cpp", 
+    "file": "Src/MainWin32.cpp" 
+  }, 
+  { 
+    "directory": "C:/Users/Stephen/Workspace/SM-Workbench", 
     "command": "cl.exe /ISrc /ISM-Engine/Src Src/Workbench.cpp", 
     "file": "Src/Workbench.cpp" 
   } 
