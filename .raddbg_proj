@@ -1,8 +1,10 @@
 // raddbg 0.9.25 project file
 
 recent_file: path: "SM-Engine/Src/SM/Renderer/VulkanRenderer.cpp"
-recent_file: path: "Src/Workbench.cpp"
 recent_file: path: "SM-Engine/Src/SM/PlatformWin32.cpp"
+recent_file: path: "SM-Engine/Src/SM/Memory.cpp"
+recent_file: path: "SM-Engine/Src/SM/Memory.h"
+recent_file: path: "Src/Workbench.cpp"
 recent_file: path: "SM-Engine/Src/SM/Renderer/VulkanFunctionsManifest.inl"
 target:
 {
@@ -13,7 +15,7 @@ target:
 debug_info:
 {
   path: "C:/Users/smerendino/Repos/SM-Workbench/Build/Workbench.pdb"
-  timestamp: 66200983828233
+  timestamp: 66200984443637
 }
 debug_info:
 {
