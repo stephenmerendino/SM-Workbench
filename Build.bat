@@ -26,6 +26,8 @@ set OutputFiles=/Fe%ExeOutput% /Fd%PdbOutput% /Fo%ObjOutput%
 set LibsPath=/LIBPATH:%EngineDir%Build\ /LIBPATH:%EngineDir%Libs\
 set LinkerFlags=/link %libs% %LibsPath%
 
+mkdir %BuildDir% >nul 2>&1
+
 call %MainDir%SM-Engine\Build.bat
 @echo on
 cl %CompilerFlags% %FilesToCompile% %IncludeDirs% %OutputFiles% %LinkerFlags%
