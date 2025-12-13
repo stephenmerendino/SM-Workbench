@@ -10,6 +10,8 @@ set Directory=%CD%
 set "Directory=!Directory:\=/!"
 set IncludeDirs=/ISrc /ISM-Engine/Src
 
+call %ScriptDir%SM-Engine\GenCompileCommandsJson.bat
+
 echo [ > %OutputFile%
 
 set "FoundFile="
