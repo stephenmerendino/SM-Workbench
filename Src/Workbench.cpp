@@ -16,7 +16,7 @@ static void Init()
 
     s_window = SM::Platform::OpenWindow("Workbench", 1920, 1080);
     s_renderer.Init(s_window);
-    s_renderer.SetClearColor(SM::ColorF32(100, 0, 0));
+    //s_renderer.SetClearColor(SM::ColorF32(100, 0, 0));
 }
 
 static void MainLoop()

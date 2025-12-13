@@ -28,7 +28,7 @@ set LinkerFlags=/link %libs% %LibsPath%
 
 mkdir %BuildDir% >nul 2>&1
 
-call %MainDir%SM-Engine\Build.bat
+call %MainDir%SM-Engine\EngineBuild.bat
 @echo on
 cl %CompilerFlags% %FilesToCompile% %IncludeDirs% %OutputFiles% %LinkerFlags%
 @echo off
