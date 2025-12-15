@@ -22,3 +22,13 @@ debug_info:
   path: "C:/dev/VulkanSDK/1.3.243.0/Bin/VkLayer_khronos_validation.pdb"
   timestamp: 66112487526220
 }
+debug_info:
+{
+  path: "C:/Users/Stephen/Workspace/SM-Workbench/Build/Workbench.pdb"
+  timestamp: 66201128126850
+}
+debug_info:
+{
+  path: "C:/VulkanSDK/1.3.268.0/Bin/VkLayer_khronos_validation.pdb"
+  timestamp: 66131125472694
+}
