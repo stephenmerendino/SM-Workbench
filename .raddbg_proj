@@ -15,10 +15,15 @@ target:
 debug_info:
 {
   path: "C:/Users/smerendino/Repos/SM-Workbench/Build/Workbench.pdb"
-  timestamp: 66200984443637
+  timestamp: 66200984709391
 }
 debug_info:
 {
   path: "C:/dev/VulkanSDK/1.3.243.0/Bin/VkLayer_khronos_validation.pdb"
   timestamp: 66112487526220
+}
+breakpoint:
+{
+  source_location: "SM-Engine/Src/SM/Renderer/VulkanRenderer.cpp:265:1"
+  hit_count: 1
 }
