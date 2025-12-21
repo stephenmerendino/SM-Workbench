@@ -1,7 +1,9 @@
 #include "Workbench.h"
 
 #include "SM/Engine.h"
+#include "SM/FramePacer.h"
 #include "SM/Platform.h"
+#include "SM/Renderer/Mesh.h"
 #include "SM/Renderer/VulkanRenderer.h"
 #include <cstdio>
 
@@ -19,59 +21,9 @@ static void Init()
 
     s_window = Platform::OpenWindow("Workbench", 1920, 1080);
     s_renderer.Init(s_window);
-}
 
-class FramePacer
-{
-    public:
-    FramePacer();
-    FramePacer(F32 targetFps);
-
-    void SetTargetFps(F32 fps);
-    void BeginFrame();
-    void EndFrame();
-
-    F32 m_targetFps = 0.0;
-    F64 m_targetFrameTimeMs = 0.0;
-    F64 m_deltaTimeMs = 0.0;
-    F64 m_frameBeginTime = 0.0;
-};
-
-FramePacer::FramePacer()
-{
-    SetTargetFps(60.0);
-}
-
-FramePacer::FramePacer(F32 targetFps)
-{
-    SetTargetFps(targetFps);
-}
-
-void FramePacer::SetTargetFps(F32 fps)
-{
-    m_targetFps = fps;
-    m_targetFrameTimeMs = 1000.0 / (F64)m_targetFps;
-}
-
-void FramePacer::BeginFrame()
-{
-    F64 previousFrameBeginTimeMs = m_frameBeginTime;
-    m_frameBeginTime = Platform::GetMillisecondsSinceAppStart();
-    m_deltaTimeMs  = m_frameBeginTime - previousFrameBeginTimeMs;
-}
-
-void FramePacer::EndFrame()
-{
-    F64 frameEndTime = Platform::GetMillisecondsSinceAppStart();
-    F64 frameTotalTimeMs = frameEndTime - m_frameBeginTime;
-
-    F64 frameTimeLeftToHitTargetMs = m_targetFrameTimeMs - frameTotalTimeMs;
-    if(frameTimeLeftToHitTargetMs < 0.0f)
-    {
-        return;
-    }
-
-    Platform::SleepThreadMilliseconds(frameTimeLeftToHitTargetMs);
+    const Mesh* pMesh = SM::GetBuiltInMesh(kUnitCube);
+    RenderableMesh pRenderableMesh = s_renderer.InitRenderableMesh(pMesh);
 }
 
 static void MainLoop()
