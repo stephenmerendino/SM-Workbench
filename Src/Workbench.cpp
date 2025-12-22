@@ -2,6 +2,7 @@
 
 #include "SM/Engine.h"
 #include "SM/FramePacer.h"
+#include "SM/Memory.h"
 #include "SM/Platform.h"
 #include "SM/Renderer/Mesh.h"
 #include "SM/Renderer/VulkanRenderer.h"
@@ -11,6 +12,9 @@ using namespace SM;
 
 VulkanRenderer s_renderer;
 Platform::Window* s_window = nullptr;
+
+static Material* s_testMaterial = nullptr;
+static RenderableMesh* s_testMesh = nullptr;
 
 static void Init()
 {
@@ -23,7 +27,48 @@ static void Init()
     s_renderer.Init(s_window);
 
     const Mesh* pMesh = SM::GetBuiltInMesh(kUnitCube);
-    RenderableMesh pRenderableMesh = s_renderer.InitRenderableMesh(pMesh);
+    PushAllocator(kEngineGlobal);
+
+    VulkanRenderer::MaterialInitParams materialParams{
+        .m_vertexShaderFilename = "BasicMaterial.hlsl",
+        .m_vertexShaderEntryFunction = "VsMain",
+        .m_pixelShaderFilename = "BasicMaterial.hlsl",
+        .m_pixelShaderEntryFunction = "PsMain"
+    };
+    s_testMaterial = s_renderer.InitMaterial(materialParams);
+
+    s_testMesh = s_renderer.InitRenderableMesh(pMesh, s_testMaterial);
+    PopAllocator();
+}
+
+static void RenderScene()
+{
+    s_renderer.Render(s_testMesh);
+}
+
+static void RenderUI(F32 deltaTimeMs)
+{
+    static bool s_showImguiDemo = false;
+
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::MenuItem("ImGui Demo"))
+        {
+            s_showImguiDemo = true;
+        }
+        char fpsString[100];
+        F32 fps = 1000.0f / deltaTimeMs;
+        ::sprintf(fpsString, "FPS %f", fps);
+        if (ImGui::MenuItem(fpsString))
+        {
+        }
+        ImGui::EndMainMenuBar();
+    }
+
+    if(s_showImguiDemo)
+    {
+        ImGui::ShowDemoWindow(&s_showImguiDemo);
+    }
 }
 
 static void MainLoop()
@@ -34,10 +79,7 @@ static void MainLoop()
     while(!quit)
     {
         framePacer.BeginFrame();    
-
         F32 deltaTimeMs = framePacer.m_deltaTimeMs;
-        F32 fps = 1000.0f / deltaTimeMs;
-
         SM::Platform::Update(s_window);
 
         // game frame
@@ -47,31 +89,8 @@ static void MainLoop()
         // render frame
         {
             s_renderer.BeginFrame();
-
-            // UI
-            {
-                static bool s_showImguiDemo = false;
-
-                if (ImGui::BeginMainMenuBar())
-                {
-                    if (ImGui::MenuItem("ImGui Demo"))
-                    {
-                        s_showImguiDemo = true;
-                    }
-                    char fpsString[100];
-                    ::sprintf(fpsString, "FPS %f", fps);
-                    if (ImGui::MenuItem(fpsString))
-                    {
-                    }
-                    ImGui::EndMainMenuBar();
-                }
-
-                if(s_showImguiDemo)
-                {
-                    ImGui::ShowDemoWindow(&s_showImguiDemo);
-                }
-            }
-
+            RenderScene();
+            RenderUI(deltaTimeMs);
             s_renderer.RenderFrame();
         }
 
