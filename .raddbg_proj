@@ -1,0 +1,34 @@
+// raddbg 0.9.25 project file
+
+recent_file: path: "SM-Engine/Src/SM/Memory.cpp"
+recent_file: path: "SM-Engine/Src/SM/PlatformWin32.cpp"
+recent_file: path: "Src/Workbench.cpp"
+recent_file: path: "SM-Engine/Src/SM/Memory.h"
+recent_file: path: "SM-Engine/Src/SM/Renderer/VulkanRenderer.cpp"
+recent_file: path: "SM-Engine/Src/SM/Renderer/VulkanFunctionsManifest.inl"
+target:
+{
+  executable: "Build/Workbench.exe"
+  working_directory: Build
+  enabled: 1
+}
+debug_info:
+{
+  path: "C:/Users/smerendino/Repos/SM-Workbench/Build/Workbench.pdb"
+  timestamp: 66200984443637
+}
+debug_info:
+{
+  path: "C:/dev/VulkanSDK/1.3.243.0/Bin/VkLayer_khronos_validation.pdb"
+  timestamp: 66112487526220
+}
+debug_info:
+{
+  path: "C:/Users/Stephen/Workspace/SM-Workbench/Build/Workbench.pdb"
+  timestamp: 66201823387614
+}
+debug_info:
+{
+  path: "C:/VulkanSDK/1.3.268.0/Bin/VkLayer_khronos_validation.pdb"
+  timestamp: 66131125472694
+}

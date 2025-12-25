@@ -1,7 +1,10 @@
 #include "Workbench.h"
 
 #include "SM/Engine.h"
+#include "SM/FramePacer.h"
+#include "SM/Memory.h"
 #include "SM/Platform.h"
+#include "SM/Renderer/Mesh.h"
 #include "SM/Renderer/VulkanRenderer.h"
 #include <cstdio>
 
@@ -9,6 +12,9 @@ using namespace SM;
 
 VulkanRenderer s_renderer;
 Platform::Window* s_window = nullptr;
+
+static Material* s_testMaterial = nullptr;
+static RenderableMesh* s_testMesh = nullptr;
 
 static void Init()
 {
@@ -19,59 +25,50 @@ static void Init()
 
     s_window = Platform::OpenWindow("Workbench", 1920, 1080);
     s_renderer.Init(s_window);
+
+    const Mesh* pMesh = SM::GetBuiltInMesh(kUnitCube);
+    PushAllocator(kEngineGlobal);
+
+    VulkanRenderer::MaterialInitParams materialParams{
+        .m_vertexShaderFilename = "BasicMaterial.hlsl",
+        .m_vertexShaderEntryFunction = "VsMain",
+        .m_pixelShaderFilename = "BasicMaterial.hlsl",
+        .m_pixelShaderEntryFunction = "PsMain"
+    };
+    s_testMaterial = s_renderer.InitMaterial(materialParams);
+
+    s_testMesh = s_renderer.InitRenderableMesh(pMesh, s_testMaterial);
+    PopAllocator();
 }
 
-class FramePacer
+static void RenderScene()
 {
-    public:
-    FramePacer();
-    FramePacer(F32 targetFps);
-
-    void SetTargetFps(F32 fps);
-    void BeginFrame();
-    void EndFrame();
-
-    F32 m_targetFps = 0.0;
-    F64 m_targetFrameTimeMs = 0.0;
-    F64 m_deltaTimeMs = 0.0;
-    F64 m_frameBeginTime = 0.0;
-};
-
-FramePacer::FramePacer()
-{
-    SetTargetFps(60.0);
+    s_renderer.Render(s_testMesh);
 }
 
-FramePacer::FramePacer(F32 targetFps)
+static void RenderUI(F32 deltaTimeMs)
 {
-    SetTargetFps(targetFps);
-}
+    static bool s_showImguiDemo = false;
 
-void FramePacer::SetTargetFps(F32 fps)
-{
-    m_targetFps = fps;
-    m_targetFrameTimeMs = 1000.0 / (F64)m_targetFps;
-}
-
-void FramePacer::BeginFrame()
-{
-    F64 previousFrameBeginTimeMs = m_frameBeginTime;
-    m_frameBeginTime = Platform::GetMillisecondsSinceAppStart();
-    m_deltaTimeMs  = m_frameBeginTime - previousFrameBeginTimeMs;
-}
-
-void FramePacer::EndFrame()
-{
-    F64 frameEndTime = Platform::GetMillisecondsSinceAppStart();
-    F64 frameTotalTimeMs = frameEndTime - m_frameBeginTime;
-
-    F64 frameTimeLeftToHitTargetMs = m_targetFrameTimeMs - frameTotalTimeMs;
-    if(frameTimeLeftToHitTargetMs < 0.0f)
+    if (ImGui::BeginMainMenuBar())
     {
-        return;
+        if (ImGui::MenuItem("ImGui Demo"))
+        {
+            s_showImguiDemo = true;
+        }
+        char fpsString[100];
+        F32 fps = 1000.0f / deltaTimeMs;
+        ::sprintf(fpsString, "FPS %f", fps);
+        if (ImGui::MenuItem(fpsString))
+        {
+        }
+        ImGui::EndMainMenuBar();
     }
 
-    Platform::SleepThreadMilliseconds(frameTimeLeftToHitTargetMs);
+    if(s_showImguiDemo)
+    {
+        ImGui::ShowDemoWindow(&s_showImguiDemo);
+    }
 }
 
 static void MainLoop()
@@ -82,10 +79,7 @@ static void MainLoop()
     while(!quit)
     {
         framePacer.BeginFrame();    
-
         F32 deltaTimeMs = framePacer.m_deltaTimeMs;
-        F32 fps = 1000.0f / deltaTimeMs;
-
         SM::Platform::Update(s_window);
 
         // game frame
@@ -95,31 +89,8 @@ static void MainLoop()
         // render frame
         {
             s_renderer.BeginFrame();
-
-            // UI
-            {
-                static bool s_showImguiDemo = false;
-
-                if (ImGui::BeginMainMenuBar())
-                {
-                    if (ImGui::MenuItem("ImGui Demo"))
-                    {
-                        s_showImguiDemo = true;
-                    }
-                    char fpsString[100];
-                    ::sprintf(fpsString, "FPS %f", fps);
-                    if (ImGui::MenuItem(fpsString))
-                    {
-                    }
-                    ImGui::EndMainMenuBar();
-                }
-
-                if(s_showImguiDemo)
-                {
-                    ImGui::ShowDemoWindow(&s_showImguiDemo);
-                }
-            }
-
+            RenderScene();
+            RenderUI(deltaTimeMs);
             s_renderer.RenderFrame();
         }
 
