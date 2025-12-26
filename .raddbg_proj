@@ -1,8 +1,10 @@
 // raddbg 0.9.25 project file
 
-recent_file: path: "SM-Engine/Src/SM/PlatformWin32.cpp"
+recent_file: path: "d:/os/obj/amd64fre/minkernel/crts/ucrt/src/appcrt/stdio/mt/objfre/amd64/minkernel/crts/ucrt/src/appcrt/stdio/output.cpp"
 recent_file: path: "SM-Engine/Src/SM/Renderer/VulkanRenderer.cpp"
 recent_file: path: "Src/Workbench.cpp"
+recent_file: path: "Src/MainWin32.cpp"
+recent_file: path: "SM-Engine/Src/SM/PlatformWin32.cpp"
 recent_file: path: "SM-Engine/Src/SM/Memory.cpp"
 recent_file: path: "SM-Engine/Src/SM/Memory.h"
 recent_file: path: "SM-Engine/Src/SM/Renderer/VulkanFunctionsManifest.inl"
@@ -25,7 +27,7 @@ debug_info:
 debug_info:
 {
   path: "C:/Users/Stephen/Workspace/SM-Workbench/Build/Workbench.pdb"
-  timestamp: 66201823387614
+  timestamp: 66202127105803
 }
 debug_info:
 {
@@ -42,8 +44,13 @@ debug_info:
   path: "C:/Users/smerendino/Workspace/Tools/VulkanSDK/1.4.335.0/Bin/VkLayer_khronos_validation.pdb"
   timestamp: 66200616706612
 }
-breakpoint:
+debug_info:
 {
-  source_location: "SM-Engine/Src/SM/PlatformWin32.cpp:683:1"
-  hit_count: 1
+  path: "C:/Users/Stephen/Workspace/Tools/VulkanSDK/1.4.335.0/Bin/VkLayer_khronos_validation.pdb"
+  timestamp: 66200616706612
+}
+debug_info:
+{
+  path: "C:/VulkanSDK/1.4.335.0/Bin/VkLayer_khronos_validation.pdb"
+  timestamp: 66200616706612
 }
