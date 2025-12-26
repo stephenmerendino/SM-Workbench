@@ -19,7 +19,7 @@ static RenderableMesh* s_testMesh = nullptr;
 static void Init()
 {
     EngineConfig config {
-        .m_rawAssetsDir = "..\\..\\..\\RawAssets\\"
+        .m_rawAssetsDir = "..\\..\\RawAssets\\"
     };
     ::SM::Init(config);
 
