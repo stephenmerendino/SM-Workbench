@@ -10,6 +10,8 @@ set Directory=%ScriptDir%
 set "Directory=!Directory:\=/!"
 set IncludeDirs=/ISrc /ISM-Engine/Src
 
+set CompilerOptions=/std:c++20
+
 call %ScriptDir%SM-Engine\GenCompileCommandsJson.bat
 
 echo [ > %OutputFile%
@@ -21,7 +23,7 @@ for /r "%ScriptDir%" %%f in (*.cpp *.c) do (
 
         echo   { >> %OutputFile%
         echo     "directory": "%Directory%", >> %OutputFile%
-        echo     "command": "cl.exe %IncludeDirs% !FoundFile!", >> %OutputFile%
+        echo     "command": "cl.exe %CompilerOptions% %IncludeDirs% !FoundFile!", >> %OutputFile%
         echo     "file": "!FoundFile!" >> %OutputFile%
         echo   }, >> %OutputFile%
     )
@@ -36,7 +38,7 @@ if not "!FoundFile!"=="" (
 
     echo   { >> %OutputFile%
     echo     "directory": "%Directory%", >> %OutputFile%
-    echo     "command": "cl.exe %IncludeDirs% !FoundFile!", >> %OutputFile%
+    echo     "command": "cl.exe %CompilerOptions% %IncludeDirs% !FoundFile!", >> %OutputFile%
     echo     "file": "!FoundFile!" >> %OutputFile%
     echo   } >> %OutputFile%
 )

@@ -8,7 +8,7 @@ set SrcDir=%MainDir%Src\
 set BuildDir=%MainDir%\Build\
 set EngineDir=%~dp0SM-Engine\
 
-set CompilerFlags=/Zi /Od /nologo /std:c++20
+set CompilerFlags=/Zi /Od /nologo /std:c++20 /EHsc
 
 set FilesToCompile=%SrcDir%%BaseFilename%.cpp
 REM set FilesToCompile=%FilesToCompile%" "%MainDir%SomeNewFile.cpp

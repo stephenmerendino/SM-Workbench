@@ -4,14 +4,17 @@
 #include "SM/FramePacer.h"
 #include "SM/Memory.h"
 #include "SM/Platform.h"
+#include "SM/Renderer/Camera.h"
 #include "SM/Renderer/Mesh.h"
 #include "SM/Renderer/VulkanRenderer.h"
 #include <cstdio>
+#include <filesystem>
 
 using namespace SM;
 
 VulkanRenderer s_renderer;
 Platform::Window* s_window = nullptr;
+Camera s_camera;
 
 static Material* s_testMaterial = nullptr;
 static RenderableMesh* s_testMesh = nullptr;
@@ -25,6 +28,10 @@ static void Init()
 
     s_window = Platform::OpenWindow("Workbench", 1920, 1080);
     s_renderer.Init(s_window);
+
+    s_renderer.SetMainCamera(&s_camera);
+    s_camera.m_worldTransform.SetTranslation(2.0f, 2.0f, 2.0f);
+    s_camera.LookAt(Vec3::kZero);
 
     const Mesh* pMesh = SM::GetBuiltInMesh(kUnitCube);
     PushAllocator(kEngineGlobal);
@@ -104,4 +111,5 @@ void WorkbenchRun()
 {
     Init();
     MainLoop();
+    Platform::Exit();
 }
