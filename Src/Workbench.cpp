@@ -8,7 +8,6 @@
 #include "SM/Renderer/Mesh.h"
 #include "SM/Renderer/VulkanRenderer.h"
 #include <cstdio>
-#include <filesystem>
 
 using namespace SM;
 
@@ -31,6 +30,7 @@ static void Init()
 
     s_renderer.SetMainCamera(&s_camera);
     s_camera.m_worldTransform.SetTranslation(2.0f, 2.0f, 2.0f);
+    s_camera.m_projection = MakePerspectiveProjection(60.0f, 0.1f, 2500.0f, Platform::GetWindowAspectRatio(s_window));
     s_camera.LookAt(Vec3::kZero);
 
     const Mesh* pMesh = SM::GetBuiltInMesh(kUnitCube);
