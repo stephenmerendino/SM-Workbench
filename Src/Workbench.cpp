@@ -29,9 +29,10 @@ static void Init()
     s_renderer.Init(s_window);
 
     s_renderer.SetMainCamera(&s_camera);
-    s_camera.m_worldTransform.SetTranslation(2.0f, 2.0f, 2.0f);
+    //s_camera.m_worldTransform.SetTranslation(2.0f, 2.0f, 2.0f);
+    //s_camera.LookAt(Vec3::kZero);
+
     s_camera.m_projection = MakePerspectiveProjection(60.0f, 0.1f, 2500.0f, Platform::GetWindowAspectRatio(s_window));
-    s_camera.LookAt(Vec3::kZero);
 
     const Mesh* pMesh = SM::GetBuiltInMesh(kUnitCube);
     PushAllocator(kEngineGlobal);
@@ -45,6 +46,8 @@ static void Init()
     s_testMaterial = s_renderer.InitMaterial(materialParams);
 
     s_testMesh = s_renderer.InitRenderableMesh(pMesh, s_testMaterial);
+    s_testMesh->m_transform.SetTranslation(0.0f, 3.0f, 0.0f);
+
     PopAllocator();
 }
 
