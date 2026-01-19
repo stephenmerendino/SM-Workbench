@@ -118,7 +118,7 @@ static void Init()
 
     s_camera.m_projection = MakePerspectiveProjection(60.0f, 0.1f, 2500.0f, Platform::GetWindowAspectRatio(s_window));
 
-    const Mesh* pMesh = SM::GetBuiltInMesh(kUnitCube);
+    const Mesh* pMesh = SM::GetBuiltInMesh(BuiltInMesh::kUnitCube);
     PushAllocator(kEngineGlobal);
 
     VulkanRenderer::MaterialInitParams materialParams{
@@ -142,7 +142,7 @@ static void RenderScene()
 
 static void RenderDebug()
 {
-    s_renderer.DebugDrawAxes(Transform::kIdentity);
+    s_renderer.DebugDrawAxes(Transform::CreateScale(10.0f));
 }
 
 static void RenderUI(F32 deltaTimeMs)
