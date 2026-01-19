@@ -27,47 +27,47 @@ static void UpdateCamera(Camera& camera, F32 deltaTimeMs)
 
     Vec3 displacement = Vec3::kZero;
 
-    // forward
-    if(SM::Platform::IsKeyDown(Platform::kKeyW))
-    {
-        displacement += camera.m_worldTransform.GetForward() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
-    }
-
-    // backward
-    if(SM::Platform::IsKeyDown(Platform::kKeyS))
-    {
-        displacement += -camera.m_worldTransform.GetForward() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
-    }
-
-    // left
-    if(SM::Platform::IsKeyDown(Platform::kKeyA))
-    {
-        displacement += -camera.m_worldTransform.GetRight() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
-    }
-
-    // right
-    if(SM::Platform::IsKeyDown(Platform::kKeyD))
-    {
-        displacement += camera.m_worldTransform.GetRight() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
-    }
-
-    // up
-    if(SM::Platform::IsKeyDown(Platform::kKeyE))
-    {
-        displacement += camera.m_worldTransform.GetUp() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
-    }
-
-    // down
-    if(SM::Platform::IsKeyDown(Platform::kKeyQ))
-    {
-        displacement += -camera.m_worldTransform.GetUp() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
-    }
-
-    camera.m_worldTransform.Translate(displacement);
-
-    //rotation
     if(SM::Platform::IsKeyDown(Platform::kMouseRButton))
     {
+        // forward
+        if(SM::Platform::IsKeyDown(Platform::kKeyW))
+        {
+            displacement += camera.m_worldTransform.GetForward() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
+        }
+
+        // backward
+        if(SM::Platform::IsKeyDown(Platform::kKeyS))
+        {
+            displacement += -camera.m_worldTransform.GetForward() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
+        }
+
+        // left
+        if(SM::Platform::IsKeyDown(Platform::kKeyA))
+        {
+            displacement += -camera.m_worldTransform.GetRight() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
+        }
+
+        // right
+        if(SM::Platform::IsKeyDown(Platform::kKeyD))
+        {
+            displacement += camera.m_worldTransform.GetRight() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
+        }
+
+        // up
+        if(SM::Platform::IsKeyDown(Platform::kKeyE))
+        {
+            displacement += camera.m_worldTransform.GetUp() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
+        }
+
+        // down
+        if(SM::Platform::IsKeyDown(Platform::kKeyQ))
+        {
+            displacement += -camera.m_worldTransform.GetUp() * s_cameraMoveMetersPerSecond * deltaTimeMs;    
+        }
+
+        camera.m_worldTransform.Translate(displacement);
+
+        //rotation
         F32 xScreenNormalized = 0.0f;
         F32 yScreenNormalized = 0.0f;
         SM::Platform::GetMousePositionScreenNormalized(xScreenNormalized, yScreenNormalized);
@@ -137,7 +137,12 @@ static void Init()
 
 static void RenderScene()
 {
-    s_renderer.Render(s_testMesh);
+    s_renderer.DrawMesh(s_testMesh);
+}
+
+static void RenderDebug()
+{
+    s_renderer.DebugDrawAxes(Transform::kIdentity);
 }
 
 static void RenderUI(F32 deltaTimeMs)
@@ -190,6 +195,7 @@ static void MainLoop()
         {
             s_renderer.BeginFrame();
             RenderScene();
+            RenderDebug();
             RenderUI(deltaTimeMs);
             s_renderer.RenderFrame();
         }
