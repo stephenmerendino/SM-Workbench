@@ -8,6 +8,8 @@
 #include "SM/Renderer/Mesh.h"
 #include "SM/Renderer/VulkanRenderer.h"
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 using namespace SM;
 
@@ -19,6 +21,48 @@ static Vec2 s_savedCameraPos = Vec2::kZero;
 
 static Material* s_testMaterial = nullptr;
 static RenderableMesh* s_testMesh = nullptr;
+
+bool CommandLineArgs::HasKey(const char* key, int* pOutIndexOptional) const
+{
+    for(int i = 0; i < m_numArgs; i++)
+    {
+        if(strcmp(key, m_keys[i]) == 0)
+        {
+            if(pOutIndexOptional) *pOutIndexOptional = i;
+            return true;
+        }
+    }
+
+    if(pOutIndexOptional) *pOutIndexOptional = -1;
+    return false;
+}
+
+bool CommandLineArgs::GetArgAsInt(const char* key, int* pOutInt) const
+{
+    int keyIndex = -1;
+    bool hasKey = HasKey(key, &keyIndex);
+    if(!hasKey) return false;
+    *pOutInt = atoi(m_values[keyIndex]);
+    return true;
+}
+
+bool CommandLineArgs::GetArgAsFloat(const char* key, float* pOutFloat) const
+{
+    int keyIndex = -1;
+    bool hasKey = HasKey(key, &keyIndex);
+    if(!hasKey) return false;
+    *pOutFloat = atof(m_values[keyIndex]);
+    return true;
+}
+
+bool CommandLineArgs::GetArgAsString(const char* key, const char** pOutString) const
+{
+    int keyIndex = -1;
+    bool hasKey = HasKey(key, &keyIndex);
+    if(!hasKey) return false;
+    *pOutString = m_values[keyIndex];
+    return true;
+}
 
 static void UpdateCamera(Camera& camera, F32 deltaTimeMs)
 {
@@ -102,10 +146,14 @@ static void UpdateCamera(Camera& camera, F32 deltaTimeMs)
     }
 }
 
-static void Init()
+static void Init(const CommandLineArgs& args)
 {
+    const char* rawAssetsDir = nullptr;
+    bool hasRawAssetsArg = args.GetArgAsString("RawAssetsDir", &rawAssetsDir);
+    if(!hasRawAssetsArg) exit(EXIT_FAILURE);
+
     EngineConfig config {
-        .m_rawAssetsDir = "C:\\Users\\Stephen\\Workspace\\SM-Workbench\\Assets\\Raw\\"
+        .m_rawAssetsDir = rawAssetsDir 
     };
     ::SM::Init(config);
 
@@ -206,9 +254,9 @@ static void MainLoop()
     }
 }
 
-void WorkbenchRun()
+void WorkbenchRun(const CommandLineArgs& args)
 {
-    Init();
+    Init(args);
     MainLoop();
     Platform::Exit();
 }
