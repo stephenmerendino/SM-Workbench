@@ -25,3 +25,10 @@ PsOutput PsMain(VsOutput input)
     output.m_color = input.m_color;
     return output;
 }
+
+PsOutput XRayPsMain(VsOutput input)
+{
+    PsOutput output;
+    output.m_color = float4(input.m_color.xyz, 0.5f);
+    return output;
+}
