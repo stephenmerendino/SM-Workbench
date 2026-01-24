@@ -26,3 +26,8 @@ struct VsInput
 	[[vk::location(2)]] float3 m_color : COLOR0;
 	[[vk::location(3)]] float3 m_normal : NORMAL0;
 };
+
+struct VsLineInput
+{
+	[[vk::location(0)]] float3 m_pos : POSITION0;
+};

@@ -169,7 +169,7 @@ static void Init(const CommandLineArgs& args)
     const Mesh* pMesh = SM::GetBuiltInMesh(BuiltInMesh::kUnitCube);
     PushAllocator(kEngineGlobal);
 
-    VulkanRenderer::MaterialInitParams materialParams{
+    MaterialInitParams materialParams{
         .m_vertexShaderFilename = "BasicMaterial.hlsl",
         .m_vertexShaderEntryFunction = "VsMain",
         .m_pixelShaderFilename = "BasicMaterial.hlsl",
@@ -190,7 +190,30 @@ static void RenderScene()
 
 static void RenderDebug()
 {
-    s_renderer.DebugDrawAxes(Transform::CreateScale(10.0f));
+    {
+        DebugDrawInfo mainWorldAxesDebugDrawInfo {
+            .m_type = DebugDrawType::kCoordinateAxes,
+            .m_transform = Transform::CreateScale(10.0f),
+            .m_drawColor = ColorF32::kWhite,
+            .m_bDrawWireframe = false,
+            .m_bDrawBehindGeo = true
+        };
+        s_renderer.DebugDrawMesh(mainWorldAxesDebugDrawInfo);
+    }
+
+    {
+        Transform t;
+        t.Scale(2.0f);
+        t.SetTranslation(2.0f, 2.0f, 0.0f);
+        DebugDrawInfo testSphereDebugDrawInfo {
+            .m_type = DebugDrawType::kSphere,
+            .m_transform = t,
+            .m_drawColor = ColorF32::kGruvboxGreen,
+            .m_bDrawWireframe = false,
+            .m_bDrawBehindGeo = true
+        };
+        s_renderer.DebugDrawMesh(testSphereDebugDrawInfo);
+    }
 }
 
 static void RenderUI(F32 deltaTimeMs)
