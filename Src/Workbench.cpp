@@ -2,6 +2,7 @@
 
 #include "SM/Engine.h"
 #include "SM/FramePacer.h"
+#include "SM/Math.h"
 #include "SM/Memory.h"
 #include "SM/Platform.h"
 #include "SM/Renderer/Camera.h"
@@ -21,48 +22,6 @@ static Vec2 s_savedCameraPos = Vec2::kZero;
 
 static Material* s_testMaterial = nullptr;
 static RenderableMesh* s_testMesh = nullptr;
-
-bool CommandLineArgs::HasKey(const char* key, int* pOutIndexOptional) const
-{
-    for(int i = 0; i < m_numArgs; i++)
-    {
-        if(strcmp(key, m_keys[i]) == 0)
-        {
-            if(pOutIndexOptional) *pOutIndexOptional = i;
-            return true;
-        }
-    }
-
-    if(pOutIndexOptional) *pOutIndexOptional = -1;
-    return false;
-}
-
-bool CommandLineArgs::GetArgAsInt(const char* key, int* pOutInt) const
-{
-    int keyIndex = -1;
-    bool hasKey = HasKey(key, &keyIndex);
-    if(!hasKey) return false;
-    *pOutInt = atoi(m_values[keyIndex]);
-    return true;
-}
-
-bool CommandLineArgs::GetArgAsFloat(const char* key, float* pOutFloat) const
-{
-    int keyIndex = -1;
-    bool hasKey = HasKey(key, &keyIndex);
-    if(!hasKey) return false;
-    *pOutFloat = atof(m_values[keyIndex]);
-    return true;
-}
-
-bool CommandLineArgs::GetArgAsString(const char* key, const char** pOutString) const
-{
-    int keyIndex = -1;
-    bool hasKey = HasKey(key, &keyIndex);
-    if(!hasKey) return false;
-    *pOutString = m_values[keyIndex];
-    return true;
-}
 
 static void UpdateCamera(Camera& camera, F32 deltaTimeMs)
 {
@@ -164,7 +123,7 @@ static void Init(const CommandLineArgs& args)
     s_camera.m_worldTransform.SetTranslation(5.0f, 5.0f, 5.0f);
     s_camera.LookAt(Vec3::kZero);
 
-    s_camera.m_projection = MakePerspectiveProjection(60.0f, 0.1f, 2500.0f, Platform::GetWindowAspectRatio(s_window));
+    s_camera.SetPerspectiveProjection(60.0f, 0.1f, 2500.0f, Platform::GetWindowAspectRatio(s_window));
 
     const Mesh* pMesh = SM::GetBuiltInMesh(BuiltInMesh::kUnitCube);
     PushAllocator(kEngineGlobal);
@@ -201,18 +160,25 @@ static void RenderDebug()
         s_renderer.DebugDrawMesh(mainWorldAxesDebugDrawInfo);
     }
 
+    if(SM::Platform::WasKeyPressed(SM::Platform::kKeySpace))
     {
-        Transform t;
-        t.Scale(2.0f);
-        t.SetTranslation(2.0f, 2.0f, 0.0f);
-        DebugDrawInfo testSphereDebugDrawInfo {
-            .m_type = DebugDrawType::kSphere,
-            .m_transform = t,
-            .m_drawColor = ColorF32::kGruvboxGreen,
+        F32 windowNormalizedX = 0.0f;
+        F32 windowNormalizedY = 0.0f;
+
+        SM::Platform::GetMousePositionWindowNormalized(s_window, windowNormalizedX, windowNormalizedY);
+        Ray r = s_camera.CalculateWorldSpaceRayForNormalizedWindowPosition(windowNormalizedX, windowNormalizedY);
+
+        DebugDrawInfo testDebugDrawInfo {
+            .m_type = DebugDrawType::kLine,
+            .m_transform = Transform::kIdentity,
+            .m_drawColor = ColorF32::GetRandomGruxBoxColor(),
             .m_bDrawWireframe = false,
-            .m_bDrawBehindGeo = true
+            .m_bDrawBehindGeo = true,
+            .m_drawDurationSeconds = GetRandomNumInRange(30.0f, 60.0f),
+            .m_lineStartPos = r.m_origin,
+            .m_lineEndPos = r.m_origin + r.m_dirNormalized * 10.0f
         };
-        s_renderer.DebugDrawMesh(testSphereDebugDrawInfo);
+        s_renderer.DebugDrawMesh(testDebugDrawInfo);
     }
 }
 
@@ -264,7 +230,7 @@ static void MainLoop()
 
         // render frame
         {
-            s_renderer.BeginFrame();
+            s_renderer.BeginFrame(deltaTimeMs);
             RenderScene();
             RenderDebug();
             RenderUI(deltaTimeMs);
@@ -283,3 +249,46 @@ void WorkbenchRun(const CommandLineArgs& args)
     MainLoop();
     Platform::Exit();
 }
+
+bool CommandLineArgs::HasKey(const char* key, int* pOutIndexOptional) const
+{
+    for(int i = 0; i < m_numArgs; i++)
+    {
+        if(strcmp(key, m_keys[i]) == 0)
+        {
+            if(pOutIndexOptional) *pOutIndexOptional = i;
+            return true;
+        }
+    }
+
+    if(pOutIndexOptional) *pOutIndexOptional = -1;
+    return false;
+}
+
+bool CommandLineArgs::GetArgAsInt(const char* key, int* pOutInt) const
+{
+    int keyIndex = -1;
+    bool hasKey = HasKey(key, &keyIndex);
+    if(!hasKey) return false;
+    *pOutInt = atoi(m_values[keyIndex]);
+    return true;
+}
+
+bool CommandLineArgs::GetArgAsFloat(const char* key, float* pOutFloat) const
+{
+    int keyIndex = -1;
+    bool hasKey = HasKey(key, &keyIndex);
+    if(!hasKey) return false;
+    *pOutFloat = atof(m_values[keyIndex]);
+    return true;
+}
+
+bool CommandLineArgs::GetArgAsString(const char* key, const char** pOutString) const
+{
+    int keyIndex = -1;
+    bool hasKey = HasKey(key, &keyIndex);
+    if(!hasKey) return false;
+    *pOutString = m_values[keyIndex];
+    return true;
+}
+
