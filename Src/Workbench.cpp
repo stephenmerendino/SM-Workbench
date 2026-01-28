@@ -87,7 +87,8 @@ static void UpdateCamera(Camera& camera, F32 deltaTimeMs)
         {
             // yaw rotate
             F32 xScreenRemap = Remap(xScreenNormalized, 0.0f, 1.0f, 1.0f, -1.0f);
-            camera.m_worldTransform.RotateZDegs(xScreenRemap * s_cameraRotateAngleDegreesPerSecond * deltaTimeMs);
+            F32 rotateZDegs = xScreenRemap * s_cameraRotateAngleDegreesPerSecond * deltaTimeMs;
+            camera.m_worldTransform.RotateZDegs(rotateZDegs);
 
             // pitch rotate
             F32 yScreenRemap = Remap(yScreenNormalized, 0.0f, 1.0f, 1.0f, -1.0f);
@@ -146,6 +147,7 @@ static void Init(const CommandLineArgs& args)
 
 static void RenderScene()
 {
+    s_camera.SetPerspectiveProjection(60.0f, 0.1f, 2500.0f, Platform::GetWindowAspectRatio(s_window));
     s_renderer.DrawMesh(s_testMesh);
 }
 
@@ -214,10 +216,10 @@ static void RenderUI(F32 deltaTimeMs)
         windowFlags |= ImGuiWindowFlags_NoNav;
         windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-        const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 10, main_viewport->WorkPos.y + 10), ImGuiCond_None);
+        const ImGuiViewport* mainViewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(ImVec2(mainViewport->WorkPos.x + 10, mainViewport->WorkPos.y + 10), ImGuiCond_None);
         ImGui::SetNextWindowBgAlpha(0.9f);
-        ImGui::SetNextWindowSize(ImVec2(mainLeftPanelWidth, main_viewport->WorkSize.y - 20));
+        ImGui::SetNextWindowSize(ImVec2(mainLeftPanelWidth, mainViewport->WorkSize.y - 20));
 
         if (ImGui::Begin("Main Left Panel", nullptr, windowFlags))
         {
@@ -231,6 +233,7 @@ static void RenderUI(F32 deltaTimeMs)
         U32 panelWidth = 500;
 
         ImGuiWindowFlags windowFlags = 0;
+        windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
         windowFlags |= ImGuiWindowFlags_NoTitleBar;
         windowFlags |= ImGuiWindowFlags_NoBackground;
         windowFlags |= ImGuiWindowFlags_NoMove;
@@ -238,9 +241,11 @@ static void RenderUI(F32 deltaTimeMs)
         windowFlags |= ImGuiWindowFlags_NoCollapse;
         windowFlags |= ImGuiWindowFlags_NoNav;
         windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+        windowFlags |= ImGuiWindowFlags_NoScrollbar;
 
-        const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 10 + mainLeftPanelWidth, main_viewport->WorkPos.y + 10), ImGuiCond_None);
+        const ImGuiViewport* mainViewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(ImVec2(mainViewport->WorkPos.x + 10 + mainLeftPanelWidth, mainViewport->WorkPos.y + 10), ImGuiCond_None);
+        ImGui::SetNextWindowSizeConstraints(ImVec2(0.0f, 0.0f), mainViewport->WorkSize);
 
         if (ImGui::Begin("LogScreen Panel", nullptr, windowFlags))
         {
@@ -266,7 +271,7 @@ static void MainLoop()
     {
         framePacer.BeginFrame();    
         F32 deltaTimeMs = framePacer.GetDeltaTimeMs();
-        SM::Platform::Update(s_window);
+        SM::Update(s_window);
 
         // game frame
         {
