@@ -8,6 +8,8 @@
 #include "SM/Renderer/Camera.h"
 #include "SM/Renderer/Mesh.h"
 #include "SM/Renderer/VulkanRenderer.h"
+#include "SM/UI.h"
+#include "ThirdParty/imgui/imgui.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -200,6 +202,54 @@ static void RenderUI(F32 deltaTimeMs)
         }
         ImGui::EndMainMenuBar();
     }
+
+    // Main left side panel
+    U32 mainLeftPanelWidth = 500;
+    {
+        ImGuiWindowFlags windowFlags = 0;
+        windowFlags |= ImGuiWindowFlags_NoTitleBar;
+        windowFlags |= ImGuiWindowFlags_NoMove;
+        windowFlags |= ImGuiWindowFlags_NoResize;
+        windowFlags |= ImGuiWindowFlags_NoCollapse;
+        windowFlags |= ImGuiWindowFlags_NoNav;
+        windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+        const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 10, main_viewport->WorkPos.y + 10), ImGuiCond_None);
+        ImGui::SetNextWindowBgAlpha(0.9f);
+        ImGui::SetNextWindowSize(ImVec2(mainLeftPanelWidth, main_viewport->WorkSize.y - 20));
+
+        if (ImGui::Begin("Main Left Panel", nullptr, windowFlags))
+        {
+            SM::UI::ImguiRenderCamera(s_camera);
+            ImGui::End();
+        }
+    }
+
+    // LogScreen panel
+    {
+        U32 panelWidth = 500;
+
+        ImGuiWindowFlags windowFlags = 0;
+        windowFlags |= ImGuiWindowFlags_NoTitleBar;
+        windowFlags |= ImGuiWindowFlags_NoBackground;
+        windowFlags |= ImGuiWindowFlags_NoMove;
+        windowFlags |= ImGuiWindowFlags_NoResize;
+        windowFlags |= ImGuiWindowFlags_NoCollapse;
+        windowFlags |= ImGuiWindowFlags_NoNav;
+        windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+        const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 10 + mainLeftPanelWidth, main_viewport->WorkPos.y + 10), ImGuiCond_None);
+
+        if (ImGui::Begin("LogScreen Panel", nullptr, windowFlags))
+        {
+            SM::UI::ImguiRenderLogScreen();
+            ImGui::End();
+        }
+    }
+
+    // LogScreen panel
 
     if(s_showImguiDemo)
     {
