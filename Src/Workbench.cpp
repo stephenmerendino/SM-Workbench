@@ -206,7 +206,7 @@ static void RenderUI(F32 deltaTimeMs)
     }
 
     // Main left side panel
-    U32 mainLeftPanelWidth = 500;
+    U32 mainLeftPanelWidth = 550;
     {
         ImGuiWindowFlags windowFlags = 0;
         windowFlags |= ImGuiWindowFlags_NoTitleBar;
