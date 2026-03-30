@@ -108,14 +108,20 @@ static void UpdateCamera(Camera& camera, F32 deltaTimeMs)
     }
 }
 
+static void GetRawAssetsPath(char* outPath, size_t outPathMaxSize)
+{
+    Platform::GetExecutablePath(outPath, outPathMaxSize);
+    sprintf_s(outPath, outPathMaxSize, "%s\\..\\Assets\\Raw\\", outPath);
+}
+
+static char s_rawAssetsDir[256];
+
 static void Init(const CommandLineArgs& args)
 {
-    const char* rawAssetsDir = nullptr;
-    bool hasRawAssetsArg = args.GetArgAsString("RawAssetsDir", &rawAssetsDir);
-    if(!hasRawAssetsArg) exit(EXIT_FAILURE);
+    GetRawAssetsPath(s_rawAssetsDir, 256);
 
     EngineConfig config {
-        .m_rawAssetsDir = rawAssetsDir 
+        .m_rawAssetsDir = s_rawAssetsDir 
     };
     ::SM::Init(config);
 
@@ -157,12 +163,29 @@ static void RenderDebug()
         DebugDrawInfo mainWorldAxesDebugDrawInfo {
             .m_type = DebugDrawType::kCoordinateAxes,
             .m_transform = Transform::CreateScale(10.0f),
-            .m_drawColor = ColorF32::kWhite,
             .m_bDrawWireframe = false,
             .m_bDrawBehindGeo = true
         };
         s_renderer.DebugDrawMesh(mainWorldAxesDebugDrawInfo);
     }
+
+    //for(int i = 0; i < 10; i++)
+    //{
+    //    for(int j = 0; j < 10; j++)
+    //    {
+    //        DebugDrawInfo testDebugDrawInfo {
+    //            .m_type = DebugDrawType::kLine,
+    //            .m_transform = Transform::kIdentity,
+    //            .m_drawColor = ColorF32::GetRandomGruxBoxColor(),
+    //            .m_bDrawWireframe = false,
+    //            .m_bDrawBehindGeo = true,
+    //            .m_drawDurationSeconds = 0.0f,
+    //            .m_lineStartPos = Vec3(i, j, 0.0f),
+    //            .m_lineEndPos = Vec3(i, j, 10.0f) 
+    //        };
+    //        s_renderer.DebugDrawMesh(testDebugDrawInfo);
+    //    }
+    //}
 
     if(SM::Platform::WasKeyPressed(SM::Platform::kKeySpace))
     {
@@ -192,15 +215,13 @@ static void RenderUI(F32 deltaTimeMs)
 
     if (ImGui::BeginMainMenuBar())
     {
-        if (ImGui::MenuItem("ImGui Demo"))
+        if (ImGui::BeginMenu("Menu"))
         {
-            s_showImguiDemo = true;
-        }
-        char fpsString[100];
-        F32 fps = 1000.0f / deltaTimeMs;
-        ::sprintf(fpsString, "FPS %f", fps);
-        if (ImGui::MenuItem(fpsString))
-        {
+            if(ImGui::MenuItem("Show ImGui Reference"))
+            {
+                s_showImguiDemo = true;
+            }
+            ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
@@ -218,7 +239,7 @@ static void RenderUI(F32 deltaTimeMs)
 
         const ImGuiViewport* mainViewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(ImVec2(mainViewport->WorkPos.x + 10, mainViewport->WorkPos.y + 10), ImGuiCond_None);
-        ImGui::SetNextWindowBgAlpha(0.9f);
+        ImGui::SetNextWindowBgAlpha(0.8f);
         ImGui::SetNextWindowSize(ImVec2(mainLeftPanelWidth, mainViewport->WorkSize.y - 20));
 
         if (ImGui::Begin("Main Left Panel", nullptr, windowFlags))
@@ -254,7 +275,37 @@ static void RenderUI(F32 deltaTimeMs)
         }
     }
 
-    // LogScreen panel
+    // Frame Stats Panel
+    {
+        U32 panelWidth = 220;
+
+        ImGuiWindowFlags windowFlags = 0;
+        windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
+        windowFlags |= ImGuiWindowFlags_NoTitleBar;
+        //windowFlags |= ImGuiWindowFlags_NoBackground;
+        windowFlags |= ImGuiWindowFlags_NoMove;
+        windowFlags |= ImGuiWindowFlags_NoResize;
+        windowFlags |= ImGuiWindowFlags_NoCollapse;
+        windowFlags |= ImGuiWindowFlags_NoNav;
+        windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+        windowFlags |= ImGuiWindowFlags_NoScrollbar;
+
+        const ImGuiViewport* mainViewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(ImVec2(mainViewport->WorkSize.x - 10 - panelWidth, mainViewport->WorkPos.y + 10), ImGuiCond_None);
+        ImGui::SetNextWindowBgAlpha(0.4f);
+        ImGui::SetNextWindowSizeConstraints(ImVec2(0.0f, 0.0f), ImVec2(panelWidth, 500.0f));
+
+        ImGui::SetNextWindowSize(ImVec2(panelWidth, -1.0f));
+
+        if (ImGui::Begin("Frame Stats Panel", nullptr, windowFlags))
+        {
+            char fpsString[100];
+            F32 fps = 1000.0f / deltaTimeMs;
+            ImGui::Text("FPS %.2f", fps);
+            ImGui::Text("Delta Time MS %.2f", deltaTimeMs);
+            ImGui::End();
+        }
+    }
 
     if(s_showImguiDemo)
     {
