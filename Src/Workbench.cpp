@@ -25,6 +25,9 @@ static Vec2 s_savedCameraPos = Vec2::kZero;
 static Material* s_testMaterial = nullptr;
 static RenderableMesh* s_testMesh = nullptr;
 
+static Sphere s_testSphere;
+static Cube s_testCube;
+
 static void UpdateCamera(Camera& camera, F32 deltaTimeMs)
 {
     static const F32 s_cameraMoveMetersPerSecond = 0.025f;
@@ -148,6 +151,12 @@ static void Init(const CommandLineArgs& args)
     s_testMesh = s_renderer.InitRenderableMesh(pMesh, s_testMaterial);
     s_testMesh->m_transform.SetTranslation(0.0f, 0.0f, 0.0f);
 
+    s_testSphere.m_origin = Vec3(1.0f, 1.0f, 0.0f);
+    s_testSphere.m_radius = 1.0f;
+
+    s_testCube.m_origin = Vec3(-1.0f, -1.0f, 0.0f);
+    s_testCube.m_halfWidth = 1.0f;
+
     PopAllocator();
 }
 
@@ -160,32 +169,8 @@ static void RenderScene()
 static void RenderDebug()
 {
     {
-        DebugDrawInfo mainWorldAxesDebugDrawInfo {
-            .m_type = DebugDrawType::kCoordinateAxes,
-            .m_transform = Transform::CreateScale(10.0f),
-            .m_bDrawWireframe = false,
-            .m_bDrawBehindGeo = true
-        };
-        s_renderer.DebugDrawMesh(mainWorldAxesDebugDrawInfo);
+        s_renderer.DebugDrawCoordinateAxes(Vec3::kZero, 0.0f, true, Transform::CreateScale(10.0f));
     }
-
-    //for(int i = 0; i < 10; i++)
-    //{
-    //    for(int j = 0; j < 10; j++)
-    //    {
-    //        DebugDrawInfo testDebugDrawInfo {
-    //            .m_type = DebugDrawType::kLine,
-    //            .m_transform = Transform::kIdentity,
-    //            .m_drawColor = ColorF32::GetRandomGruxBoxColor(),
-    //            .m_bDrawWireframe = false,
-    //            .m_bDrawBehindGeo = true,
-    //            .m_drawDurationSeconds = 0.0f,
-    //            .m_lineStartPos = Vec3(i, j, 0.0f),
-    //            .m_lineEndPos = Vec3(i, j, 10.0f) 
-    //        };
-    //        s_renderer.DebugDrawMesh(testDebugDrawInfo);
-    //    }
-    //}
 
     if(SM::Platform::WasKeyPressed(SM::Platform::kKeySpace))
     {
@@ -195,17 +180,13 @@ static void RenderDebug()
         SM::Platform::GetMousePositionWindowNormalized(s_window, windowNormalizedX, windowNormalizedY);
         Ray r = s_camera.CalculateWorldSpaceRayForNormalizedWindowPosition(windowNormalizedX, windowNormalizedY);
 
-        DebugDrawInfo testDebugDrawInfo {
-            .m_type = DebugDrawType::kLine,
-            .m_transform = Transform::kIdentity,
-            .m_drawColor = ColorF32::GetRandomGruxBoxColor(),
-            .m_bDrawWireframe = false,
-            .m_bDrawBehindGeo = true,
-            .m_drawDurationSeconds = GetRandomNumInRange(30.0f, 60.0f),
-            .m_lineStartPos = r.m_origin,
-            .m_lineEndPos = r.m_origin + r.m_dirNormalized * 10.0f
-        };
-        s_renderer.DebugDrawMesh(testDebugDrawInfo);
+        F32 length = 4.0f;
+        s_renderer.DebugDrawLine(r.m_origin, r.m_origin + r.m_dirNormalized * length);
+    }
+
+    // test sphere
+    {
+        s_renderer.DebugDrawSphere(s_testSphere);
     }
 }
 
